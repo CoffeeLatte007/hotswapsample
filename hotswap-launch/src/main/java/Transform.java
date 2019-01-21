@@ -25,11 +25,7 @@ public class Transform {
     }
     public static void main(String[] args) throws Exception {
         Test1 tt = new Test1();
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-        File file = new File(jarBasePath + "/hotswap-agent-jar-with-dependencies.jar");
-        method.setAccessible(true);
-        method.invoke(classLoader, file.toURI().toURL());
+
         installAgent();
         TestTransformer testTransformer = new TestTransformer();
         int max = 20;
@@ -45,7 +41,14 @@ public class Transform {
      * 初始化引擎
      */
     private static void installAgent() throws Exception {
+        //对classLoader添加第三方Jar包
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        File file = new File(jarBasePath + "/hotswap-agent-jar-with-dependencies.jar");
+        method.setAccessible(true);
+        method.invoke(classLoader, file.toURI().toURL());
         final String nameOfRunningVM = ManagementFactory.getRuntimeMXBean().getName();
+
         /**
          * 获取当前的Pid
          */
