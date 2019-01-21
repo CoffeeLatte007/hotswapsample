@@ -25,7 +25,6 @@ public class Transform {
     }
     public static void main(String[] args) throws Exception {
         Test1 tt = new Test1();
-
         installAgent();
         TestTransformer testTransformer = new TestTransformer();
         int max = 20;
